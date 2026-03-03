@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Billing Page</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+
+        .box {
+            width: 900px;
+            margin: 40px auto;
+            background: white;
+            border: 1px solid #999;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table, th, td {
+            border: 1px solid #666;
+        }
+
+        th, td {
+            padding: 6px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .summary {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .summary p {
+            margin: 4px 0;
+        }
+
+        hr {
+            margin: 25px 0;
+        }
+
+        .denomination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn-back {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 25px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .btn-back:hover {
+        background-color: #0056b3;
+    }
+    .btn-history:hover {
+    background-color: #218838;
+    }
+    .button-container {
+        width: 900px;
+        margin: 20px auto;
+        display: flex;
+        justify-content: space-between;
+    }
+    .btn-history {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="box">
+
+<h2>Billing Page</h2>
+
+<p><b>Customer Email:</b> {{ invoice.customer.email }}</p>
+
+<h3>Bill section</h3>
+
+<table>
+<tr>
+    <th>Product ID</th>
+    <th>Unit Price</th>
+    <th>Quantity</th>
+    <th>Purchase Price</th>
+    <th>Tax %</th>
+    <th>Tax Payable</th>
+    <th>Total Price</th>
+</tr>
+
+{% for item in invoice.items %}
+<tr>
+    <td>{{ item.product_id }}</td>
+    <td>{{ item.unit_price }}</td>
+    <td>{{ item.quantity }}</td>
+    <td>{{ item.unit_price * item.quantity }}</td>
+    <td>{{ item.tax_percentage }}</td>
+    <td>{{ (item.unit_price * item.quantity * item.tax_percentage) / 100 }}</td>
+    <td>{{ item.total_price }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<div class="summary">
+    <p><b>Total price without tax:</b> {{ invoice.total_amount }}</p>
+    <p><b>Total tax payable:</b> {{ invoice.total_tax }}</p>
+    <p><b>Net price of the purchased item:</b> {{ invoice.grand_total }}</p>
+    <p><b>Rounded down value of the purchased net price:</b> {{ invoice.grand_total | round(0, 'floor') }}</p>
+    <p><b>Balance payable to the customer:</b> {{ invoice.balance_amount }}</p>
+</div>
+
+<hr>
+
+<div class="denomination">
+    <h3>Balance Denomination:</h3>
+
+    {% for note in breakdown %}
+        <p>{{ note.value }} : {{ note.count }}</p>
+    {% endfor %}
+</div>
+
+</div>
+
+<div class="button-container">
+    <a href="/" class="btn-back">Back to Billing</a>
+    <a href="/history" class="btn-history">View Purchase History</a>
+</div>
+
+</body>
+</html>

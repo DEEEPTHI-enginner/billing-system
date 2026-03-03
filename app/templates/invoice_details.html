@@ -1,0 +1,31 @@
+<h2>Invoice Details</h2>
+
+<p><b>Invoice ID:</b> {{ invoice.id }}</p>
+<p><b>Customer:</b> {{ invoice.customer.email }}</p>
+<p><b>Grand Total:</b> {{ invoice.grand_total }}</p>
+<p><b>Date:</b> {{ invoice.created_at }}</p>
+
+<h3>Purchased Items</h3>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Tax %</th>
+        <th>Total</th>
+    </tr>
+
+    {% for item in invoice.items %}
+    <tr>
+        <td>{{ item.product.product_id }} - {{ item.product.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.unit_price }}</td>
+        <td>{{ item.tax_percentage }}</td>
+        <td>{{ item.total_price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/history">Back to History</a>

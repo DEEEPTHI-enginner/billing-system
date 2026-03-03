@@ -1,0 +1,30 @@
+<h2>Purchase History for {{ email }}</h2>
+
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+
+{% if invoices %}
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Invoice ID</th>
+        <th>Grand Total</th>
+        <th>Date</th>
+        <th>Action</th>
+    </tr>
+
+    {% for invoice in invoices %}
+    <tr>
+        <td>{{ invoice.id }}</td>
+        <td>{{ invoice.grand_total }}</td>
+        <td>{{ invoice.created_at }}</td>
+        <td>
+            <a href="/invoice/{{ invoice.id }}">View Items</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<br>
+<a href="/">Back to Billing</a>

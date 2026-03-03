@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Billing Page</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+
+        .box {
+            width: 800px;
+            margin: 40px auto;
+            background: #ffffff;
+            border: 1px solid #999;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .row {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: inline-block;
+            width: 150px;
+        }
+
+        input, select {
+            padding: 5px;
+            width: 180px;
+        }
+
+        .bill-section {
+            margin-top: 20px;
+        }
+
+        .bill-row {
+            margin-bottom: 10px;
+        }
+
+        hr {
+            margin: 30px 0;
+        }
+
+        .denomination-row {
+            margin-bottom: 8px;
+        }
+
+        .denomination-row label {
+            width: 60px;
+        }
+
+        .buttons {
+            text-align: right;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 6px 15px;
+            border: 1px solid #888;
+            cursor: pointer;
+        }
+
+        .btn-generate {
+            background-color: #9be59b;
+            border: 1px solid #4caf50;
+        }
+
+        .btn-cancel {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+
+<h2>Billing Page</h2>
+
+<form method="post" action="/generate">
+
+<div class="row">
+    <label>Customer Email</label>
+    <input type="email" name="email" placeholder="Email ID" required>
+</div>
+
+<div class="bill-section">
+    <label>Bill section</label>
+
+    <div id="products">
+
+        <div class="bill-row">
+            <select name="product_id_0">
+                {% for product in products %}
+                <option value="{{ product.product_id }}">
+                    {{ product.product_id }} - {{ product.name }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <input type="number" name="quantity_0" placeholder="Quantity" min="1" required>
+        </div>
+
+    </div>
+
+    <button type="button" class="btn" onclick="addProduct()">Add New</button>
+</div>
+
+<hr>
+
+<div>
+    <label><b>Denominations</b></label>
+
+    <div class="denomination-row">
+        <label>500</label>
+        <input type="number" name="denom_500" placeholder="Count" min="0" value="0">
+    </div>
+
+    <div class="denomination-row">
+        <label>50</label>
+        <input type="number" name="denom_50" placeholder="Count" min="0" value="0">
+    </div>
+
+    <div class="denomination-row">
+        <label>20</label>
+        <input type="number" name="denom_20" placeholder="Count" min="0" value="0">
+    </div>
+
+    <div class="denomination-row">
+        <label>10</label>
+        <input type="number" name="denom_10" placeholder="Count" min="0" value="0">
+    </div>
+
+    <div class="denomination-row">
+        <label>5</label>
+        <input type="number" name="denom_5" placeholder="Count" min="0" value="0">
+    </div>
+
+    <div class="denomination-row">
+        <label>2</label>
+        <input type="number" name="denom_2" placeholder="Count" min="0" value="0">
+    </div>
+
+    <div class="denomination-row">
+        <label>1</label>
+        <input type="number" name="denom_1" placeholder="Count" min="0" value="0">
+    </div>
+</div>
+
+<div class="row" style="margin-top:20px;">
+    <label>Cash paid by customer</label>
+    <input type="number" name="paid_amount" placeholder="Amount" required>
+</div>
+
+<div class="buttons">
+    <button type="reset" class="btn btn-cancel">Cancel</button>
+    <button type="submit" class="btn btn-generate">Generate Bill</button>
+</div>
+
+</form>
+
+</div>
+
+<script>
+let index = 1;
+
+function addProduct() {
+    let div = document.createElement("div");
+    div.className = "bill-row";
+    div.innerHTML = `
+        <select name="product_id_${index}">
+            {% for product in products %}
+            <option value="{{ product.product_id }}">
+                {{ product.product_id }} - {{ product.name }}
+            </option>
+            {% endfor %}
+        </select>
+        <input type="number" name="quantity_${index}" placeholder="Quantity" min="1" required>
+    `;
+    document.getElementById("products").appendChild(div);
+    index++;
+}
+</script>
+
+</body>
+</html>
